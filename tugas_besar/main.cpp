@@ -98,7 +98,7 @@ int main() {
 
                     cout << "Masukkan Angkatan (Tahun): ";
                     if (!(cin >> angkatan_input)) {
-                        cout << "❌ Input Angkatan tidak valid. Mahasiswa dibatalkan." << endl;
+                        cout << "Input Angkatan tidak valid. Mahasiswa dibatalkan." << endl;
                         cin.clear();
                         cin.ignore(numeric_limits<streamsize>::max(), '\n');
                         pilihan_sub = 1;
@@ -106,7 +106,7 @@ int main() {
                     }
 
                     if (findChildByNIM(L_Child, nim_input) != nullptr) {
-                        cout << "❌ Gagal. Mahasiswa dengan NIM " << nim_input << " sudah ada." << endl;
+                        cout << "Gagal. Mahasiswa dengan NIM " << nim_input << " sudah ada." << endl;
                     } else {
                         address_child C_Baru = alokasiChild(nim_input, nama_input, angkatan_input);
                         insertChild(L_Child, C_Baru);

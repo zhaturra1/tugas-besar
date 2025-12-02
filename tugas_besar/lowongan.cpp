@@ -79,7 +79,7 @@ void menuInsertParent(ListParent &L, int &ID_Counter) {
     // 4. INPUT SYARAT IPK/KUOTA (FLOAT)
     cout << "Masukkan Syarat IPK Minimum (Contoh: 3.00): ";
     if (!(cin >> kuota_input)) {
-        cout << "❌ Input IPK tidak valid. Lowongan dibatalkan." << endl;
+        cout << "Input IPK tidak valid. Lowongan dibatalkan." << endl;
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         return;
