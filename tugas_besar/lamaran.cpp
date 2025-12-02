@@ -10,7 +10,7 @@ using namespace std;
 // di file lowongan.cpp dan mahasiswa.cpp masing-masing.
 
 // 1. Insert element relation (Mahasiswa Ajukan Lamaran)
-void insertRelasi(ListParent &L_Parent, ListChild &L_Child, int ID_Lowongan, const char* NIM_Mhs, const char* Nama_Mhs, int ID_Lamaran_Baru) {
+void insertRelasi(ListParent &L_Parent, ListChild &L_Child, int ID_Lowongan, string NIM_Mhs, string Nama_Mhs, int ID_Lamaran_Baru) {
     // 1. Pastikan data Mahasiswa ada/dibuat di List Child
     handleInputMahasiswa(L_Child, NIM_Mhs, Nama_Mhs);
 
@@ -37,9 +37,9 @@ void insertRelasi(ListParent &L_Parent, ListChild &L_Child, int ID_Lowongan, con
             while (R_Last->next != nullptr) R_Last = R_Last->next;
             R_Last->next = R_Baru;
         }
-        cout << "Lamaran ID " << ID_Lamaran_Baru << " diajukan ke Lowongan " << ID_Lowongan << "." << endl;
+        cout << " Lamaran ID " << ID_Lamaran_Baru << " diajukan ke Lowongan " << ID_Lowongan << "." << endl;
     } else {
-        cout << "Error: Lowongan ID " << ID_Lowongan << " tidak ditemukan. Lamaran dibatalkan." << endl;
+        cout << " Error: Lowongan ID " << ID_Lowongan << " tidak ditemukan. Lamaran dibatalkan." << endl;
     }
 }
 
@@ -48,7 +48,7 @@ void insertRelasi(ListParent &L_Parent, ListChild &L_Child, int ID_Lowongan, con
 // Catatan: Asumsikan Anda dapat mengakses ListChild L_Child jika diperlukan
 // Namun, karena Node Relasi (R) sudah menyimpan ptr_child, kita bisa traversing Parent saja.
 
-void showStatusLamaranMahasiswa(ListParent L_Parent, const char* NIM_Target) {
+void showStatusLamaranMahasiswa(ListParent L_Parent, string NIM_Target) {
     address_parent P = L_Parent.first;
     bool found_lamaran = false;
 
@@ -60,7 +60,7 @@ void showStatusLamaranMahasiswa(ListParent L_Parent, const char* NIM_Target) {
         address_relasi R = P->first_relasi;
         while (R != nullptr) {
             // Cek apakah NIM pada ptr_child Node Relasi cocok dengan NIM_Target
-            if (strcmp(R->ptr_child->info.nim, NIM_Target) == 0) {
+            if (R->ptr_child->info.nim == NIM_Target) {
                 found_lamaran = true;
 
                 cout << "  [Lowongan ID " << P->info.id_lowongan << "]: " << P->info.posisi
@@ -122,9 +122,113 @@ void showRekapLamaranPerusahaan(ListParent L_Parent) {
 
 // Catatan: Pastikan juga Anda menghapus atau mengganti semua stubs (placeholder)
 // yang tersisa di lamaran.cpp dengan implementasi aslinya.
+// Tambahkan atau pastikan fungsi-fungsi ini sudah ada di lamaran.cpp
 
+// Implementasi fungsi Edit Dosen (untuk verifikasi)
+void editStatusDosen(ListParent &L_Parent, int ID_Lamaran_Target, int Status_Baru) {
+    address_parent P_Parent = L_Parent.first;
+    address_relasi R_Target = nullptr;
 
+    // Cari Node Relasi (Lamaran) di seluruh Lowongan
+    while (P_Parent != nullptr && R_Target == nullptr) {
+        address_relasi R = P_Parent->first_relasi;
+        while (R != nullptr) {
+            if (R->info.id_lamaran == ID_Lamaran_Target) {
+                R_Target = R;
+                break;
+            }
+            R = R->next;
+        }
+        if (R_Target != nullptr) break;
+        P_Parent = P_Parent->next;
+    }
+
+    if (R_Target != nullptr) {
+        if (Status_Baru == 1 || Status_Baru == 2) {
+            R_Target->info.status_dosen = Status_Baru;
+            cout << "Status Verifikasi Dosen untuk Lamaran ID " << ID_Lamaran_Target << " diperbarui menjadi: **" << (Status_Baru == 1 ? "DISETUJUI" : "DITOLAK") << "**" << endl;
+        } else {
+            cout << "Input status verifikasi tidak valid (1=Setuju, 2=Tolak)." << endl;
+        }
+    } else {
+        cout << "Lamaran dengan ID " << ID_Lamaran_Target << " tidak ditemukan." << endl;
+    }
+}
+
+// Implementasi fungsi Edit Perusahaan (untuk keputusan akhir)
+void editStatusPerusahaan(ListParent &L_Parent, int ID_Lamaran_Target, int Status_Baru) {
+    address_parent P_Parent = L_Parent.first;
+    address_relasi R_Target = nullptr;
+
+    // Cari Node Relasi (Lamaran) di seluruh Lowongan
+    while (P_Parent != nullptr && R_Target == nullptr) {
+        address_relasi R = P_Parent->first_relasi;
+        while (R != nullptr) {
+            if (R->info.id_lamaran == ID_Lamaran_Target) {
+                R_Target = R;
+                break;
+            }
+            R = R->next;
+        }
+        if (R_Target != nullptr) break;
+        P_Parent = P_Parent->next;
+    }
+
+    if (R_Target != nullptr) {
+        // Logika Penting: Perusahaan hanya memproses jika Dosen sudah menyetujui (Status 1)
+        if (R_Target->info.status_dosen != 1) {
+            cout << "GAGAL. Lamaran ID " << ID_Lamaran_Target << " belum diverifikasi/ditolak Dosen (Status harus DISETUJUI)." << endl;
+            return;
+        }
+
+        if (Status_Baru == 1 || Status_Baru == 2) {
+            R_Target->info.status_perusahaan = Status_Baru;
+            cout << "Keputusan Perusahaan untuk Lamaran ID " << ID_Lamaran_Target << " diperbarui menjadi: **" << (Status_Baru == 1 ? "DITERIMA" : "DITOLAK") << "**" << endl;
+        } else {
+            cout << "Status input tidak valid." << endl;
+        }
+    } else {
+        cout << "Lamaran dengan ID " << ID_Lamaran_Target << " tidak ditemukan." << endl;
+    }
+}
+
+// Catatan: Anda juga harus memastikan fungsi showLowonganDanPelamar sudah diimplementasikan untuk Show M:N.
+void showLowonganDanPelamar(ListParent L_Parent) {
+    address_parent P = L_Parent.first;
+
+    cout << "\n========================================================" << endl;
+    cout << "LAPORAN M:N LENGKAP: LOWONGAN DAN SEMUA PELAMAR" << endl;
+    cout << "========================================================" << endl;
+
+    if (P == nullptr) {
+        cout << "List Lowongan (Parent) kosong. Tidak ada data untuk ditampilkan." << endl;
+        return;
+    }
+
+    while (P != nullptr) {
+        cout << "\n[LOWONGAN ID " << P->info.id_lowongan << "]: " << P->info.posisi
+                  << " (Perusahaan: " << P->info.nama_perusahaan << ")" << endl;
+
+        address_relasi R = P->first_relasi;
+
+        if (R == nullptr) {
+            cout << "   -> Status: Belum ada pelamar." << endl;
+        } else {
+            cout << "   -> DETAIL PELAMAR (RELASI):" << endl;
+            cout << "   -----------------------------------------------------" << endl;
+            while (R != nullptr) {
+                address_child C = R->ptr_child;
+
+                cout << "   [Lamaran ID: " << R->info.id_lamaran << "] "
+                          << "NIM: " << C->info.nim << " | Nama: " << C->info.nama << endl;
+                cout << "      Status Dosen: " << (R->info.status_dosen == 1 ? "Disetujui" : (R->info.status_dosen == 2 ? "Ditolak" : "Menunggu")) << endl;
+                cout << "      Status Perusahaan: " << (R->info.status_perusahaan == 1 ? "**DITERIMA**" : (R->info.status_perusahaan == 2 ? "DITOLAK" : "Menunggu")) << endl;
+
+                R = R->next;
+            }
+        }
+        P = P->next;
+    }
+}
 // Stubs (placeholder) untuk fungsi edit dan show lainnya
-void editStatusDosen(ListParent &L_Parent, int ID_Lamaran_Target, int Status_Baru) { cout << "Fungsi Edit Dosen belum diimplementasikan." << endl; }
-void editStatusPerusahaan(ListParent &L_Parent, int ID_Lamaran_Target, int Status_Baru) { cout << "Fungsi Edit Perusahaan belum diimplementasikan." << endl; }
-void showLowonganDanPelamar(ListParent L_Parent) { cout << "Fungsi Show M:N belum diimplementasikan." << endl; }
+

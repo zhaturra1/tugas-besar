@@ -11,12 +11,12 @@ void createListParent(ListParent &L) {
     L.first = nullptr;
 }
 
-address_parent alokasiParent(int ID, const char* Posisi, const char* Perusahaan, float Kuota) {
+address_parent alokasiParent(int ID, string Posisi, string Perusahaan, float Kuota) {
     address_parent P = new NodeParent;
     if (P != nullptr) {
         P->info.id_lowongan = ID;
-        strcpy(P->info.posisi, Posisi);
-        strcpy(P->info.nama_perusahaan, Perusahaan);
+        P->info.posisi = Posisi;
+        P->info.nama_perusahaan = Perusahaan;
         P->info.kuota = Kuota;
         P->next = nullptr;
         P->first_relasi = nullptr;
