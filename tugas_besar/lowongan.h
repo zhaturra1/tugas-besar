@@ -5,11 +5,11 @@
 
 // DEKLARASI FUNGSI LOWONGAN (PARENT)
 void createListParent(ListParent &L);
-address_parent alokasiParent(int ID, const char* Posisi, const char* Perusahaan, float Kuota);
+address_parent alokasiParent(int ID, string Posisi, string Perusahaan, float Kuota);
 void insertParent(ListParent &L, address_parent P_Baru);
 address_parent findParent(ListParent L, int ID_Target);
-
+void showLowongan(ListParent L_Parent);
+void showMahasiswa(ListChild L_Child);
 // --- FUNGSI INPUT UTAMA (INTERAKTIF) ---
 void menuInsertParent(ListParent &L, int &ID_Counter);
-
 #endif // LOWONGAN_H

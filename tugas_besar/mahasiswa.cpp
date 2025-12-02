@@ -9,11 +9,11 @@ void createListChild(ListChild &L) {
     L.first = nullptr;
 }
 
-address_child alokasiChild(const char* NIM, const char* Nama, int Angkatan) {
+address_child alokasiChild(string NIM, string Nama, int Angkatan) {
     address_child C = new NodeChild;
     if (C != nullptr) {
-        strcpy(C->info.nim, NIM);
-        strcpy(C->info.nama, Nama);
+        C->info.nim = NIM;
+        C->info.nama = Nama;
         C->info.angkatan = Angkatan;
         C->next = nullptr;
     }
@@ -30,10 +30,10 @@ void insertChild(ListChild &L, address_child C_Baru) {
     }
 }
 
-address_child findChildByNIM(ListChild L, const char* NIM_Target) {
+address_child findChildByNIM(ListChild L, string NIM_Target) {
     address_child P = L.first;
     while (P != nullptr) {
-        if (strcmp(P->info.nim, NIM_Target) == 0) return P;
+        if (P->info.nim == NIM_Target) return P;
         P = P->next;
     }
     return nullptr;
@@ -52,7 +52,7 @@ void showMahasiswa(ListChild L_Child) {
 }
 
 // Fungsi utama untuk input dinamis
-void handleInputMahasiswa(ListChild &L_Child, const char* NIM, const char* Nama) {
+void handleInputMahasiswa(ListChild &L_Child, string NIM, string Nama) {
     address_child C_Target = findChildByNIM(L_Child, NIM);
 
     if (C_Target == nullptr) {

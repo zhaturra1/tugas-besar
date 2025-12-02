@@ -2,6 +2,9 @@
 #define MLL_STRUCTS_H
 
 #include <iostream>
+#include <string>
+
+using namespace std;
 
 // Definisikan tipe data pointer agar semua struct bisa saling mengenali
 typedef struct NodeRelasi* address_relasi;
@@ -11,8 +14,8 @@ typedef struct NodeChild* address_child;
 // --- 1. STRUKTUR LIST PARENT (LOWONGAN) ---
 struct InfoLowongan {
     int id_lowongan;
-    char posisi[50];
-    char nama_perusahaan[100];
+    string posisi;
+    string nama_perusahaan;
     float kuota; // Digunakan sebagai syarat IPK Minimum
 };
 
@@ -29,8 +32,8 @@ struct ListParent {
 // --- 2. STRUKTUR LIST CHILD (MAHASISWA) ---
 // Dideklarasikan di sini agar pointer relasi bisa mengenalinya
 struct InfoMahasiswa {
-    char nim[10];
-    char nama[100];
+    string nim;
+    string nama;
     int angkatan;
 };
 

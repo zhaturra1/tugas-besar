@@ -6,20 +6,9 @@
 
 using namespace std;
 
-// --- DEKLARASI ULANG FUNGSI DARI FILE LAIN ---
-// (Deklarasi ini penting untuk compiler)
-void createListParent(ListParent &L);
-void createListChild(ListChild &L);
-void menuInsertParent(ListParent &L, int &ID_Counter);
-void insertRelasi(ListParent &L_Parent, ListChild &L_Child, int ID_Lowongan, const char* NIM_Mhs, const char* Nama_Mhs, int ID_Lamaran_Baru);
-void editStatusDosen(ListParent &L_Parent, int ID_Lamaran_Target, int Status_Baru);
-void editStatusPerusahaan(ListParent &L_Parent, int ID_Lamaran_Target, int Status_Baru);
-void showLowonganDanPelamar(ListParent L_Parent);
+
 
 // Deklarasi fungsi Show (yang implementasinya ada di lowongan.cpp dan mahasiswa.cpp)
-void showLowongan(ListParent L_Parent);
-void showMahasiswa(ListChild L_Child);
-
 // --- FUNGSI UTAMA ---
 int main() {
     ListParent L_Parent;
@@ -27,8 +16,8 @@ int main() {
     createListParent(L_Parent);
     createListChild(L_Child);
 
-    int counter_lowongan = 101;
-    int counter_lamaran = 501;
+    int counter_lowongan = 103;
+    int counter_lamaran = 1;
     int pilihan_menu_utama;
 
     cout << "========================================" << endl;
@@ -48,10 +37,11 @@ int main() {
         cout << "4. Verifikasi Dosen (Edit Relasi)" << endl;
         cout << "5. Keputusan Perusahaan (Edit Relasi)" << endl;
        cout << "6. Tampilkan Semua Lowongan & Pelamar (Show All M:N)" << endl;
-        cout << "7. Tampilkan Data Dasar (Parent & Child)" << endl;
-        cout << "8. **STATUS LAMARAN (MAHASISWA)**" << endl; // <-- OPSI BARU (Mahasiswa)
-        cout << "9. **REKAP LAMARAN (ADMIN/PERUSAHAAN)**" << endl; // <-- OPSI BARU (Perusahaan/Admin)
-        cout << "10. Keluar" << endl; // Exit option adjusted
+        cout << "7. Tampilkan Data Lowongan (Parent & Child)" << endl;
+         cout << "8. Tampilkan Data Pelamar (Parent & Child)" << endl;
+        cout << "9. **STATUS LAMARAN (MAHASISWA)**" << endl; // <-- OPSI BARU (Mahasiswa)
+        cout << "10. **REKAP LAMARAN (ADMIN/PERUSAHAAN)**" << endl; // <-- OPSI BARU (Perusahaan/Admin)
+        cout << "11. Keluar" << endl; // Exit option adjusted
         cout << "Pilihan Anda: ";
 
 
@@ -98,7 +88,7 @@ int main() {
 
                     cout << "Masukkan Angkatan (Tahun): ";
                     if (!(cin >> angkatan_input)) {
-                        cout << "❌ Input Angkatan tidak valid. Mahasiswa dibatalkan." << endl;
+                        cout << "Input Angkatan tidak valid. Mahasiswa dibatalkan." << endl;
                         cin.clear();
                         cin.ignore(numeric_limits<streamsize>::max(), '\n');
                         pilihan_sub = 1;
@@ -106,11 +96,11 @@ int main() {
                     }
 
                     if (findChildByNIM(L_Child, nim_input) != nullptr) {
-                        cout << "❌ Gagal. Mahasiswa dengan NIM " << nim_input << " sudah ada." << endl;
+                        cout << "Gagal. Mahasiswa dengan NIM " << nim_input << " sudah ada." << endl;
                     } else {
                         address_child C_Baru = alokasiChild(nim_input, nama_input, angkatan_input);
                         insertChild(L_Child, C_Baru);
-                        cout << "✅ Mahasiswa " << nama_input << " berhasil ditambahkan." << endl;
+                        cout << "Mahasiswa " << nama_input << " berhasil ditambahkan." << endl;
                     }
 
                     cout << "\n--- SUB-MENU ---" << endl;
@@ -169,10 +159,13 @@ int main() {
             }
             case 7: { // Tampilkan Data Dasar
                 showLowongan(L_Parent);
+                break;
+            }
+            case 8: { // Tampilkan Data Dasar
                 showMahasiswa(L_Child);
                 break;
             }
-           case 8: { // STATUS LAMARAN (MAHASISWA)
+           case 9: { // STATUS LAMARAN (MAHASISWA)
                 char nim_input[10];
                 cout << "\n--- STATUS LAMARAN ---" << endl;
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -181,11 +174,11 @@ int main() {
                 showStatusLamaranMahasiswa(L_Parent, nim_input);
                 break;
             }
-            case 9: { // REKAP LAMARAN (ADMIN/PERUSAHAAN)
+            case 10: { // REKAP LAMARAN (ADMIN/PERUSAHAAN)
                 showRekapLamaranPerusahaan(L_Parent);
                 break;
             }
-            case 10:
+            case 11:
                 cout << "Program selesai. Terima kasih!" << endl;
                 break;
             default:
