@@ -13,3 +13,5 @@ void editStatusPerusahaan(ListParent &L_Parent, int ID_Lamaran_Target, int Statu
 void showLowonganDanPelamar(ListParent L_Parent);
 
 #endif // LAMARAN_H
+
+//badjingan
